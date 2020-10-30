@@ -13,7 +13,6 @@ step_q = 0.2
 q_initial = 0.1
 q_last = 0.9
 r_min = 1e-10
-precise_border = 1e-16
 
 x3 = 0
 qr_initial_up = 2
@@ -38,7 +37,7 @@ for q in lq:
 	lr = []
 	r = r_initial_up
 	while(r > r_min):
-		lphi_norm.append(potentials.norm_round_thor_potential_at_x3_eq_zero(r,0,r0,R0,precise_border))
+		lphi_norm.append(potentials.norm_round_thor_potential(r,0,r0,R0))
 		lr.append(r)	
 		r=r-step
 	
