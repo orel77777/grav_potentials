@@ -5,9 +5,6 @@ Created on Fri Oct  2 17:47:47 2020
 
 @author: ivan
 """
-import math
-from scipy.integrate import quad
-import mpmath
 import matplotlib.pyplot as plt
 import potentials
 
@@ -41,7 +38,7 @@ for q in lq:
 	lr = []
 	r = r_initial_up
 	while(r > r_min):
-		lphi_norm.append((quad(potentials.norm_round_thor_potential_at_x3_eq_zero, precise_border, (math.pi-precise_border), args=(r,x3,r0,R0))[0]+quad(potentials.norm_round_thor_potential_at_x3_eq_zero, (math.pi+precise_border), ((2*math.pi)-precise_border), args=(r,x3,r0,R0))[0])*(3/(2*math.pi*math.sqrt(2))))
+		lphi_norm.append(potentials.norm_round_thor_potential_at_x3_eq_zero(r,0,r0,R0,precise_border))
 		lr.append(r)	
 		r=r-step
 	
