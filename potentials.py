@@ -2,7 +2,7 @@ import math
 from scipy.integrate import quad
 import mpmath
 
-def diff_norm_round_thor_potential_at_x3_eq_zero(theta,r,x3,r0,R0):
+def diff_norm_round_thor_potential(theta,r,x3,r0,R0):
 	R1 = (1+((r0/R0)*math.cos(theta)))
 	a = (2*((r**2)+((x3-(r0*math.sin(theta)))**2))/(R0**2))
 	b = (((a/2)-(R1**2))+math.sqrt((((a/2)+(R1**2))**2)-((4*(R1**2))*(((r)**2)/(R0**2)))))
@@ -13,6 +13,6 @@ def diff_norm_round_thor_potential_at_x3_eq_zero(theta,r,x3,r0,R0):
 	phi_norm = (((math.cos(theta))/(math.sqrt(a-c)))*(((c+(2*((R1**2)-(((r**2)/(R0**2))))))*((mpmath.ellipk(k1**2))))+((a-c)*((mpmath.ellipe(k1**2))))-((a-(((2*(r**2))/(R0**2))))*((mpmath.ellippi(n,k1**2))))))
 	return phi_norm
 
-def norm_round_thor_potential_at_x3_eq_zero(r,x3,r0,R0,precise_border):
-	return (quad(diff_norm_round_thor_potential_at_x3_eq_zero, precise_border, (math.pi-precise_border), args=(r,x3,r0,R0))[0]
-					+quad(diff_norm_round_thor_potential_at_x3_eq_zero, (math.pi+precise_border), ((2*math.pi)-precise_border), args=(r,x3,r0,R0))[0])*(3/(2*math.pi*math.sqrt(2)))
+def norm_round_thor_potential(r,x3,r0,R0,precise_border):
+	return (quad(diff_norm_round_thor_potential, precise_border, (math.pi-precise_border), args=(r,x3,r0,R0))[0]
+					+quad(diff_norm_round_thor_potential, (math.pi+precise_border), ((2*math.pi)-precise_border), args=(r,x3,r0,R0))[0])*(3/(2*math.pi*math.sqrt(2)))
