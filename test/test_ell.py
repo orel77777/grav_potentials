@@ -51,16 +51,10 @@ def test_cube_rel_center_and_top(a1,a2,a3):
 	rel = (center_pot/vertex_pot)
 	np.testing.assert_allclose(rel, 2, atol=1e-5)
 	
-@pytest.mark.parametrize('x2, x3, R, H', [(0.5,0.5,1,10), (0.5,0.5,2,25), (0.5,0.5,3,50), (0.5,0.5,4,75), (0.5,0.5,5,100)])
+@pytest.mark.parametrize('x2, x3, R, H', [(0.5,0.5,1,2), (0.5,0.5,2,50), (0.5,0.5,3,75), (0.5,0.5,4,100), (0.5,0.5,5,125)])
 def test_cyl_inner_round_pot(x2, x3, R, H):
 	r = math.sqrt((x2**2)+(x3**2))
-	round_pot = 2*math.pi*(R**2)*math.log(2*H/r)
-	ell_pot = potentials.norm_ell_cyl_potential(x2, x3, H, R)
-	np.testing.assert_allclose(round_pot, ell_pot, atol=1e-5)
+	round_pot_inner = math.pi*((2*(R**2)*math.log(2*math.sqrt(math.exp(1))*H/R))-(r**2))
+	ell_pot = potentials.norm_ell_cyl_potential(x2, x3, H, R, R)
+	np.testing.assert_allclose(round_pot_inner, ell_pot, atol=1e-5)
 
-@pytest.mark.parametrize('x2, x3, R, H', [(5,5,1,10), (5,5,2,25), (5,5,3,50), (5,5,4,75), (5,5,5,100)])
-def test_cyl_ext_round_pot(x2, x3, R, H):
-	r = math.sqrt((x2**2)+(x3**2))
-	round_pot = math.pi*((2*(R**2)*math.log(2*math.sqrt(math.exp(1))*H/R))-(r**2))  
-	ell_pot = potentials.norm_ell_cyl_potential(x2, x3, H, R)
-	np.testing.assert_allclose(round_pot, ell_pot, atol=1e-5)
