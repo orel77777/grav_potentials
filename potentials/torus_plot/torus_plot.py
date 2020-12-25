@@ -54,17 +54,19 @@ def main():
 		plt.xlabel(r'$\frac{r}{R_0}$', fontsize=17)
 		plt.ylabel(r'$\frac{\varphi(r)}{\frac{8}{3} \pi G \rho R_0 r_0 }$', fontsize=17)
 		plt.legend()
+	plt.tight_layout()
 	plt.show()
-
+	
 	plt.plot(lq, lrR0max, '.-')
 	plt.grid(True)
 	plt.xlabel(r'q = $\frac{r_0}{R_0}$', fontsize=17)
 	plt.ylabel(r'$(\frac{r}{R_0})_{max}$', fontsize=17)
+	plt.tight_layout()
 	plt.show()
 
 	plt.plot(lq, lphimax, '.-')
 	plt.grid(True)
 	plt.xlabel(r'q = $\frac{r_0}{R_0}$', fontsize=17)
 	plt.ylabel(r'$( \frac{\varphi(r)}{\frac{8}{3} \pi G \rho R_0 r_0 } )_{max}$', fontsize=17)
+	plt.tight_layout()
 	plt.show()
-
