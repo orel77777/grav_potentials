@@ -24,8 +24,9 @@ def diff_norm_round_thor_potential(theta, r, x3, r0, R0):
     n = ((a-b)/(2*((r**2)/(R0**2))))
     k_up = math.sqrt(((a/2)+(R1**2)-(2*R1*r/R0))/((a/2)+(R1**2)+(2*R1*r/R0)))
     k1 = ((1-k_up)/(1+k_up))
-    phi_norm = (((math.cos(theta))/(math.sqrt(a-c)))*(((c+(2*((R1**2)-(((r**2)/(R0**2))))))*((mpmath.ellipk(k1**2)))
-                                                       )+((a-c)*((mpmath.ellipe(k1**2))))-((a-(((2*(r**2))/(R0**2))))*((mpmath.ellippi(n, k1**2))))))
+    phi_norm = (((math.cos(theta))/(math.sqrt(a-c)))*(((c+(2*((R1**2)-(((r**2)/(R0**2))))))*((mpmath.ellipk(k1**2)))) +
+                                                      ((a-c)*((mpmath.ellipe(k1**2)))) -
+                                                      ((a-(((2*(r**2))/(R0**2))))*((mpmath.ellippi(n, k1**2))))))
     return phi_norm
 
 
@@ -53,7 +54,10 @@ def norm_round_thor_potential(r, x3, r0, R0):
             normilized torus potential at (r, x3).
 
     '''
-    return (quad(diff_norm_round_thor_potential, 0, (2*math.pi), args=(r, x3, r0, R0), points=[0, math.pi])[0])*(3/(2*math.pi*math.sqrt(2)))
+    return (quad(diff_norm_round_thor_potential,
+                 0, (2*math.pi),
+                 args=(r, x3, r0, R0),
+                 points=[0, math.pi])[0])*(3/(2*math.pi*math.sqrt(2)))
 
 
 def norm_round_ring_potential(r, x3, R):
@@ -109,7 +113,8 @@ def norm_round_disk_potential(r, x3, R):
         return float((2*math.pi*((math.sqrt((R**2)+(x3**2))-abs(x3)))))
     elif((x3 == 0) and (r != 0)):
         if(r > R):
-            return float((4/r)*(((r**2)*mpmath.ellipe((R/r)**2))-(((r**2)-(R**2))*mpmath.ellipk((R/r)**2))))
+            return float((4/r)*(((r**2)*mpmath.ellipe((R/r)**2)) -
+                                (((r**2)-(R**2))*mpmath.ellipk((R/r)**2))))
         elif(r <= R):
             return float(((4*R)*(mpmath.ellipe((r/R)**2))))
     elif((x3 != 0) and (r != 0)):
@@ -120,8 +125,11 @@ def norm_round_disk_potential(r, x3, R):
         k = 2*math.sqrt(R*r)/a
         n1 = (alpha_quad*((a**2)-(b**2)))/((a**2)*((alpha_quad)-(b**2)))
         n2 = (beta_quad*((a**2)-(b**2)))/((a**2)*((beta_quad)-(b**2)))
-        phi_norm = 4*((-math.pi*0.5*x3) + ((((R**2)-(r**2)-(x3**2))/(2*a))*(1+((4*(R**2)*(x3**2))/(alpha_quad*beta_quad)))*mpmath.ellipk(k**2))+(((x3**2)*(R*(b**2)/a))*(((mpmath.ellippi(
-            n1, k**2))/((alpha_quad-(b**2))*(R+math.sqrt((r**2)+(x3**2)))))+((mpmath.ellippi(n2, k**2))/((beta_quad-(b**2))*(R-math.sqrt((r**2)+(x3**2)))))))+(a*0.5*mpmath.ellipe(k**2)))
+        phi_norm = 4*((-math.pi*0.5*x3) +
+                      ((((R**2)-(r**2)-(x3**2))/(2*a))*(1+((4*(R**2)*(x3**2))/(alpha_quad*beta_quad)))*mpmath.ellipk(k**2)) +
+                      (((x3**2)*(R*(b**2)/a))*(((mpmath.ellippi(n1, k**2))/((alpha_quad-(b**2))*(R+math.sqrt((r**2)+(x3**2))))) +
+                                               ((mpmath.ellippi(n2, k**2))/((beta_quad-(b**2))*(R-math.sqrt((r**2)+(x3**2))))))) +
+                      (a*0.5*mpmath.ellipe(k**2)))
         return float(phi_norm)
 
 
@@ -157,11 +165,14 @@ def norm_ellipsoid_potential(x1, x2, x3, a1, a2, a3):
         return math.sqrt(((a1**2)+vv)*((a2**2)+vv)*((a3**2)+vv))
 
     def integral(v):
-        return (1/(delta(v)))*(1-((x1**2)/((a1**2)+v))-((x2**2)/((a2**2)+v))-((x3**2)/((a3**2)+v)))
+        return (1/(delta(v)))*(1-((x1**2)/((a1**2)+v)) -
+                               ((x2**2)/((a2**2)+v)) -
+                               ((x3**2)/((a3**2)+v)))
     if((((x1/a1)**2)+((x2/a2)**2)+((x3/a3)**2)) > 1):
         lambda_c = Symbol('lambda_c', real=True)
-        lambda_ccl = solve(((((x1**2)/((a1**2)+lambda_c))+((x2**2) /
-                                                           ((a2**2)+lambda_c))+((x3**2)/((a3**2)+lambda_c)))-1), lambda_c)
+        lambda_ccl = solve(((((x1**2)/((a1**2)+lambda_c)) +
+                             ((x2**2)/((a2**2)+lambda_c)) +
+                             ((x3**2)/((a3**2)+lambda_c)))-1), lambda_c)
 
         if(lambda_ccl[0] >= 0):
             lambda_cc = lambda_ccl[0]
@@ -244,7 +255,14 @@ def norm_inner_cube_potential(x1, x2, x3, a1, a2, a3):
         rb = math.sqrt((ksi1**2)+(eta1**2)+(dzeta2**2))
         rc = math.sqrt((ksi2**2)+(eta1**2)+(dzeta2**2))
         rd = math.sqrt((ksi2**2)+(eta2**2)+(dzeta2**2))
-        return dzeta2*((ksi1*math.log((eta1+rb)/(eta2+ra)))-(ksi2*math.log((eta1+rc)/(eta2+rd)))-(eta1*math.log((((rb-ksi1)*(rc+ksi2))/((eta1**2)+(dzeta2**2)))))+(eta2*math.log((((ra-ksi1)*(rd+ksi2))/((eta2**2)+(dzeta2**2)))))+(dzeta2*(math.atan((ksi1*dzeta2)/((eta1**2)+(eta1*rb)+(dzeta2**2)))-math.atan((ksi2*dzeta2)/((eta1**2)+(eta1*rc)+(dzeta2**2)))))-(dzeta2*(math.atan((ksi1*dzeta2)/((eta2**2)+(eta2*ra)+(dzeta2**2)))-math.atan((ksi2*dzeta2)/((eta2**2)+(eta2*rd)+(dzeta2**2))))))
+        return dzeta2*((ksi1*math.log((eta1+rb)/(eta2+ra))) -
+                       (ksi2*math.log((eta1+rc)/(eta2+rd))) -
+                       (eta1*math.log((((rb-ksi1)*(rc+ksi2))/((eta1**2)+(dzeta2**2))))) +
+                       (eta2*math.log((((ra-ksi1)*(rd+ksi2))/((eta2**2)+(dzeta2**2))))) +
+                       (dzeta2*(math.atan((ksi1*dzeta2)/((eta1**2)+(eta1*rb)+(dzeta2**2))) -
+                                math.atan((ksi2*dzeta2)/((eta1**2)+(eta1*rc)+(dzeta2**2))))) -
+                       (dzeta2*(math.atan((ksi1*dzeta2)/((eta2**2)+(eta2*ra)+(dzeta2**2))) -
+                                math.atan((ksi2*dzeta2)/((eta2**2)+(eta2*rd)+(dzeta2**2))))))
 
     def ph_efgh(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2):
         return ph_abcd(ksi1, ksi2, eta1, eta2, dzeta1, (-dzeta1))
@@ -261,8 +279,12 @@ def norm_inner_cube_potential(x1, x2, x3, a1, a2, a3):
     def ph_dcgh(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2):
         return ph_abfe(-ksi2, ksi2, eta1, eta2, dzeta1, dzeta2)
 
-    phi_norm = (0.5*(ph_abcd(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2)+ph_efgh(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2)+ph_abfe(ksi1, ksi2, eta1, eta2, dzeta1,
-                                                                                                                             dzeta2)+ph_dcgh(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2)+ph_bcgf(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2)+ph_adhe(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2)))
+    phi_norm = (0.5*(ph_abcd(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2) +
+                     ph_efgh(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2) +
+                     ph_abfe(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2) +
+                     ph_dcgh(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2) +
+                     ph_bcgf(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2) +
+                     ph_adhe(ksi1, ksi2, eta1, eta2, dzeta1, dzeta2)))
     return phi_norm
 
 
@@ -303,12 +325,15 @@ def norm_ell_cyl_potential(x2, x3, H, a2, a3):
         R = math.sqrt((a**2)+(b**2))
         K = math.sqrt((R+a)/2)
         L = math.sqrt((R-a)/2)
-        phi_norm = (2*math.pi*a2*a3*(math.log((4*H*math.sqrt(e))/(math.sqrt((a2**2)-(a3**2))))+(0.25*math.log(
-            (((K-1)**2)+(L**2))/(((K+1)**2)+(L**2))))+((((K-1)*((x2**2)-(x3**2)))-(2*L*abs(x2*x3)))/((a2**2)-(a3**2)))))
+        phi_norm = (2*math.pi*a2*a3*(
+            math.log((4*H*math.sqrt(e))/(math.sqrt((a2**2)-(a3**2)))) +
+            (0.25*math.log((((K-1)**2)+(L**2))/(((K+1)**2)+(L**2)))) +
+            ((((K-1)*((x2**2)-(x3**2)))-(2*L*abs(x2*x3)))/((a2**2)-(a3**2)))))
     else:
         A2 = ((2*a3)/(a2+a3))
         A3 = ((2*a2)/(a2+a3))
-        phi_norm = (
-            math.pi*((2*a2*a3*math.log((4*math.sqrt(e)*H)/(a2+a3)))-(A2*(x2**2))-(A3*(x3**2))))
+        phi_norm = (math.pi*((2*a2*a3*math.log((4*math.sqrt(e)*H)/(a2+a3))) -
+                             (A2*(x2**2)) -
+                             (A3*(x3**2))))
 
     return phi_norm

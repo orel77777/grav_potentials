@@ -22,6 +22,7 @@ q_last = 0.5
 r_R0_up = 2
 r0 = 1
 
+
 def parse_args():
     pars = argparse.ArgumentParser()
     pars.add_argument("-r", "--r",
@@ -58,10 +59,10 @@ def main():
     z = plt.plot(r_R0, phi_norm, '.-')
     plt.grid(True)
     plt.xlabel(r'$\frac{r}{R_0}$', fontsize=17)
-    plt.ylabel(
-        r'$\frac{\varphi(r)}{\frac{8}{3} \pi G \rho R_0 r_0 }$', fontsize=17)
-    labels = np.core.defchararray.add(np.repeat(
-        r'$q = \frac{r_0}{R_0} = $', lq.shape[0]), np.round(lq, 3).astype(str))
+    plt.ylabel(r'$\frac{\varphi(r)}{\frac{8}{3} \pi G \rho R_0 r_0 }$',
+               fontsize=17)
+    labels = np.core.defchararray.add(np.repeat(r'$q = \frac{r_0}{R_0} = $', lq.shape[0]),
+                                      np.round(lq, 3).astype(str))
     plt.legend(iter(z), labels)
     plt.tight_layout()
     plt.show()
@@ -80,3 +81,5 @@ def main():
                fontsize=17)
     plt.tight_layout()
     plt.show()
+
+
